@@ -1,37 +1,52 @@
 package com.hbd.mommy.domain.food.service;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.hbd.mommy.domain.food.model.FoodTag;
+import com.hbd.mommy.domain.food.model.FoodDiseaseWarning;
+import com.hbd.mommy.domain.food.model.entity.Food;
 import com.hbd.mommy.domain.food.model.response.ResponseFood;
 import com.hbd.mommy.domain.food.repository.FoodRepository;
-import com.hbd.mommy.domain.user.model.entity.User;
-import com.hbd.mommy.domain.user.repository.UserRepository;
-import com.hbd.mommy.global.error.exception.UserNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class FoodService {
-	private final UserRepository userRepository;
 	private final FoodRepository foodRepository;
 
-	public List<ResponseFood> findFoods(Long userId, String keyword) {
-		User user = userRepository.findById(userId)
-			.orElseThrow(UserNotFoundException::new);
+	public List<ResponseFood> findFoods(String keyword) {
 		return foodRepository.findAllByNameKeyword(keyword).stream()
-			.map(food -> ResponseFood.builder()
-				.name(food.getName())
-				.imageUrl(food.getImageUrl())
-				.tags(mapToFoodTags(food.getTags(), user))
-				.build())
+			.map(this::mapToFoodResponse)
 			.toList();
 	}
 
-	private List<FoodTag> mapToFoodTags(String tags, User user) {
+	private ResponseFood mapToFoodResponse(Food food) {
+		return ResponseFood.builder()
+			.name(food.getName())
+			.imageUrl(food.getImageUrl())
+			.tags(mapToFoodTags(food.getTags()))
+			.calcium(food.getCalcium())
+			.protein(food.getProtein())
+			.iron(food.getIron())
+			.vitaminC(food.getVitaminC())
+			.diseaseWarnings(mapToDiseaseWarnings(food.getDiseaseWarning()))
+			.build();
+	}
+
+	private List<FoodDiseaseWarning> mapToDiseaseWarnings(String diseaseWarning) {
+		return Arrays.stream(diseaseWarning.split(","))
+			.map(warning -> {
+				String[] token = warning.split("#");
+				return new FoodDiseaseWarning(token[0], token[1]);
+			})
+			.toList();
+	}
+
+	// TODO 구현 필요
+	private List<String> mapToFoodTags(String tags) {
 		return List.of();
 	}
 }

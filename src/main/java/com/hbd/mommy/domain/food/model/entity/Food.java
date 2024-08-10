@@ -1,9 +1,13 @@
 package com.hbd.mommy.domain.food.model.entity;
 
+import static jakarta.persistence.EnumType.*;
+
+import com.hbd.mommy.domain.food.model.FoodSafeType;
 import com.hbd.mommy.global.base.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
@@ -34,5 +38,17 @@ public class Food extends BaseEntity {
 	@NotNull
 	private String imageUrl;
 
-	private int daysEatAfterBirth;
+	@Enumerated(STRING)
+	private FoodSafeType safeType;
+
+	@NotNull
+	private String diseaseWarning;
+
+	private double vitaminC;
+
+	private double iron;
+
+	private double calcium;
+
+	private double protein;
 }

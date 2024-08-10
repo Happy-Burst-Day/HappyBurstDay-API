@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hbd.mommy.domain.food.model.response.ResponseFood;
 import com.hbd.mommy.domain.food.service.FoodService;
-import com.hbd.mommy.global.auth.jwt.AppAuthentication;
-import com.hbd.mommy.global.auth.role.UserAuth;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -30,8 +28,7 @@ public class FoodController {
 	 * @return 음식 목록
 	 */
 	@GetMapping
-	@UserAuth
-	public List<ResponseFood> findFood(AppAuthentication auth, @RequestParam("keyword") String keyword) {
-		return foodService.findFoods(auth.getUserId(), keyword);
+	public List<ResponseFood> findFood(@RequestParam("keyword") String keyword) {
+		return foodService.findFoods(keyword);
 	}
 }
