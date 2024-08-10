@@ -8,5 +8,5 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RequestAddWishlist {
 	@NotNull
-	private int foodId;
+	private Long foodId;
 }

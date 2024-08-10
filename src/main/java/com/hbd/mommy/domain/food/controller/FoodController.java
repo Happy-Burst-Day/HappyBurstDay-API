@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hbd.mommy.domain.food.model.response.ResponseFood;
+import com.hbd.mommy.domain.food.model.dto.FoodDto;
 import com.hbd.mommy.domain.food.service.FoodService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,7 +28,7 @@ public class FoodController {
 	 * @return 음식 목록
 	 */
 	@GetMapping
-	public List<ResponseFood> findFood(@RequestParam("keyword") String keyword) {
+	public List<FoodDto> findFood(@RequestParam("keyword") String keyword) {
 		return foodService.findFoods(keyword);
 	}
 }

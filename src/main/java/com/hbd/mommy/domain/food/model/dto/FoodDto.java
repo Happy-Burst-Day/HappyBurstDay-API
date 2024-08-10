@@ -1,18 +1,18 @@
-package com.hbd.mommy.domain.food.model.response;
+package com.hbd.mommy.domain.food.model.dto;
 
 import java.util.List;
 
 import com.hbd.mommy.domain.food.model.FoodDiseaseWarning;
 import com.hbd.mommy.domain.food.model.FoodSafeType;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Getter
-@Builder
+@SuperBuilder
 @RequiredArgsConstructor
-public class ResponseFood {
+public class FoodDto {
 	private final String name;
 	private final String imageUrl;
 	private final FoodSafeType safeType;
