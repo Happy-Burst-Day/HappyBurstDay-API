@@ -5,6 +5,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 
+import com.hbd.mommy.domain.food.model.FoodDiseaseType;
 import com.hbd.mommy.domain.food.model.FoodDiseaseWarning;
 import com.hbd.mommy.domain.food.model.dto.FoodDto;
 import com.hbd.mommy.domain.food.model.entity.Food;
@@ -31,8 +32,15 @@ public class FoodMapper {
 	private static List<FoodDiseaseWarning> mapToDiseaseWarnings(String diseaseWarning) {
 		return Arrays.stream(diseaseWarning.split("@"))
 			.map(warning -> {
+				FoodDiseaseType type = FoodDiseaseType.GOOD;
 				String[] token = warning.split("#");
-				return new FoodDiseaseWarning(token[0], token[1]);
+
+				if (token[0].startsWith("!")) {
+					token[0] = token[0].substring(1);
+					type = FoodDiseaseType.BAD;
+				}
+
+				return new FoodDiseaseWarning(type, token[0], token[1]);
 			})
 			.toList();
 	}
