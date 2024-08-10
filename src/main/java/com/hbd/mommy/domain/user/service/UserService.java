@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hbd.mommy.domain.user.exception.WrongPasswordException;
+import com.hbd.mommy.domain.user.model.dto.request.RequestChangeBirthDateDto;
 import com.hbd.mommy.domain.user.model.dto.request.RequestLoginDto;
 import com.hbd.mommy.domain.user.model.dto.response.ResponseLoginDto;
 import com.hbd.mommy.domain.user.model.dto.response.ResponseUserInfoDto;
@@ -19,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 @Slf4j
 public class UserService {
@@ -50,5 +51,12 @@ public class UserService {
 		String accessToken = jwtProvider.getAccessTokenFromHeader(request);
 		AuthenticationToken token = jwtProvider.reissue(accessToken, refreshToken);
 		return new ResponseLoginDto(token);
+	}
+
+	public ResponseUserInfoDto changeBirthDate(Long userId, RequestChangeBirthDateDto request) {
+		User user = userRepository.findById(userId)
+			.orElseThrow(UserNotFoundException::new);
+		user.changeBirthDate(request.getBirthDate());
+		return ResponseUserInfoDto.from(user);
 	}
 }

@@ -48,4 +48,8 @@ public class User extends BaseEntity {
 
 	@Enumerated(STRING)
 	private UserRole role;
+
+	public void changeBirthDate(LocalDate birthDate) {
+		this.birthDate = birthDate;
+	}
 }
