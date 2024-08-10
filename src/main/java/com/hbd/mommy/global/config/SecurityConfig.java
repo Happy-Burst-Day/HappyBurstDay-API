@@ -2,9 +2,10 @@ package com.hbd.mommy.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -20,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@EnableGlobalMethodSecurity(securedEnabled = true)
+@EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -28,32 +29,19 @@ public class SecurityConfig {
 	private final CustomAccessDeniedHandler customAccessDeniedHandler;
 	private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
-	private static final String[] PUBLIC_URI = {
-		"/swagger-ui/**", "/api-docs/**", "/test/**"
-	};
-
-	private static final String[] ADMIN_URI = {
-		"/admin/**", "/test/auth", "/manage/**"
-	};
-
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		return http
-			.httpBasic().disable()
-			.formLogin().disable()
-			.csrf().disable()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			.and()
-			.authorizeRequests()
-			.antMatchers(PUBLIC_URI).permitAll()
-			.antMatchers(ADMIN_URI).access("hasRole('ADMIN')")
-			.and()
+			.httpBasic(AbstractHttpConfigurer::disable)
+			.formLogin(AbstractHttpConfigurer::disable)
+			.csrf(AbstractHttpConfigurer::disable)
+			.sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+			.authorizeHttpRequests(ar -> ar.anyRequest().permitAll())
 			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
 			.addFilterBefore(exceptionHandlerFilter, JwtAuthenticationFilter.class)
-			.exceptionHandling()
-			.accessDeniedHandler(customAccessDeniedHandler)
-			.authenticationEntryPoint(customAuthenticationEntryPoint)
-			.and()
+			.exceptionHandling(c ->
+				c.accessDeniedHandler(customAccessDeniedHandler)
+					.authenticationEntryPoint(customAuthenticationEntryPoint))
 			.build();
 	}
 

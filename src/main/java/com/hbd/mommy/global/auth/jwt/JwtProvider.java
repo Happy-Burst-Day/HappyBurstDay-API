@@ -76,7 +76,7 @@ public class JwtProvider implements AuthenticationTokenProvider {
 
 	public AuthenticationToken issue(User user) {
 		return JwtAuthenticationToken.builder()
-			.accessToken(createAccessToken(user.getId().toString(), user.getUserRole()))
+			.accessToken(createAccessToken(user.getId().toString(), user.getRole()))
 			.refreshToken(createRefreshToken())
 			.build();
 	}

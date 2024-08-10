@@ -4,11 +4,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.hbd.mommy.domain.user.exception.AlreadyNicknameException;
 import com.hbd.mommy.domain.user.exception.WrongPasswordException;
 import com.hbd.mommy.domain.user.model.dto.request.RequestLoginDto;
 import com.hbd.mommy.domain.user.model.dto.response.ResponseLoginDto;
-import com.hbd.mommy.domain.user.model.dto.response.ResponseRefreshTokenDto;
 import com.hbd.mommy.domain.user.model.dto.response.ResponseUserInfoDto;
 import com.hbd.mommy.domain.user.model.entity.User;
 import com.hbd.mommy.domain.user.repository.UserRepository;
@@ -31,7 +29,7 @@ public class UserService {
 	private final JwtProvider jwtProvider;
 
 	public ResponseLoginDto login(RequestLoginDto dto) {
-		User user = userRepository.findByStudentId(dto.getStudentId())
+		User user = userRepository.findByEmail(dto.getEmail())
 			.orElseThrow(UserNotFoundException::new);
 
 		if (passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
@@ -43,23 +41,14 @@ public class UserService {
 	}
 
 	public ResponseUserInfoDto getUserInfo(Long userId) {
-		User user = findUser(userId);
-		return null;
+		User user = userRepository.findById(userId)
+			.orElseThrow(UserNotFoundException::new);
+		return ResponseUserInfoDto.from(user);
 	}
 
-	public ResponseRefreshTokenDto refreshToken(HttpServletRequest request, String refreshToken) {
+	public ResponseLoginDto refreshToken(HttpServletRequest request, String refreshToken) {
 		String accessToken = jwtProvider.getAccessTokenFromHeader(request);
 		AuthenticationToken token = jwtProvider.reissue(accessToken, refreshToken);
-		return new ResponseRefreshTokenDto(token);
-	}
-
-	private User findUser(Long userId) {
-		return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-	}
-
-	public void checkAlreadyNickname(String nickname) {
-		if (userRepository.findByNickname(nickname).isPresent()) {
-			throw new AlreadyNicknameException();
-		}
+		return new ResponseLoginDto(token);
 	}
 }

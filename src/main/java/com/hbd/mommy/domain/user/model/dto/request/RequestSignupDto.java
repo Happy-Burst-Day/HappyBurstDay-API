@@ -1,7 +1,10 @@
 package com.hbd.mommy.domain.user.model.dto.request;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -11,11 +14,13 @@ import lombok.RequiredArgsConstructor;
 public class RequestSignupDto {
 
 	@NotBlank
-	@Size(min = 3, max = 16)
-	@Pattern(regexp = "^(?!.*\\s{2,})[A-Za-z\\dㄱ-ㅎㅏ-ㅣ가-힣_ ]{3,16}$")
-	private final String nickname;
+	@Email
+	private final String email;
 
 	@NotBlank
 	@Size(min = 3, max = 200)
 	private final String password;
+
+	@NotBlank
+	private final LocalDate birthDate;
 }
