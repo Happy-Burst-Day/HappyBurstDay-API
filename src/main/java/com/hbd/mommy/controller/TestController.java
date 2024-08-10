@@ -20,7 +20,7 @@ public class TestController {
 	@ResponseBody
 	@GetMapping
 	public String hello() {
-		return "{\"result\": true}";
+		return "{\"message\": true}";
 	}
 
 	/**
@@ -32,6 +32,6 @@ public class TestController {
 	@GetMapping("/auth")
 	@UserAuth
 	public String helloAuth(AppAuthentication auth) {
-		return "Hello, %s".formatted(auth.getName());
+		return "{\"message\": \"Hello, your ID is %s\"}".formatted(auth.getUserId());
 	}
 }
