@@ -39,4 +39,8 @@ public class WishlistItem extends BaseEntity {
 	private Food food;
 
 	private int likes;
+
+	public void increaseLike() {
+		likes++;
+	}
 }

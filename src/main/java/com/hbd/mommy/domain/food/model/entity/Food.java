@@ -32,16 +32,14 @@ public class Food extends BaseEntity {
 	@NotNull
 	private String name;
 
-	@NotNull
 	private String tags;
 
-	@NotNull
 	private String imageUrl;
 
 	@Enumerated(STRING)
 	private FoodSafeType safeType;
 
-	@NotNull
+	@Column(columnDefinition = "LONGTEXT")
 	private String diseaseWarning;
 
 	private double vitaminC;

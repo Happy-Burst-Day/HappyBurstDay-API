@@ -13,6 +13,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @RequiredArgsConstructor
 public class FoodDto {
+	private final Long id;
 	private final String name;
 	private final String imageUrl;
 	private final FoodSafeType safeType;

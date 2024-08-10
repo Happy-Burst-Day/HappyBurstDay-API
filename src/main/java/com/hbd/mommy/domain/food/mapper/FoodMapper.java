@@ -10,6 +10,7 @@ import com.hbd.mommy.domain.food.model.entity.Food;
 public class FoodMapper {
 	public static FoodDto toFoodResponse(Food food) {
 		return FoodDto.builder()
+			.id(food.getId())
 			.name(food.getName())
 			.imageUrl(food.getImageUrl())
 			.tags(mapToFoodTags(food.getTags()))
@@ -17,12 +18,13 @@ public class FoodMapper {
 			.protein(food.getProtein())
 			.iron(food.getIron())
 			.vitaminC(food.getVitaminC())
+			.safeType(food.getSafeType())
 			.diseaseWarnings(mapToDiseaseWarnings(food.getDiseaseWarning()))
 			.build();
 	}
 
 	private static List<FoodDiseaseWarning> mapToDiseaseWarnings(String diseaseWarning) {
-		return Arrays.stream(diseaseWarning.split(","))
+		return Arrays.stream(diseaseWarning.split("@"))
 			.map(warning -> {
 				String[] token = warning.split("#");
 				return new FoodDiseaseWarning(token[0], token[1]);

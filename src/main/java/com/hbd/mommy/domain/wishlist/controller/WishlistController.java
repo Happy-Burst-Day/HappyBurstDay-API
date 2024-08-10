@@ -5,12 +5,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hbd.mommy.domain.wishlist.model.WishlistItemDto;
 import com.hbd.mommy.domain.wishlist.model.dto.request.RequestAddWishlist;
 import com.hbd.mommy.domain.wishlist.model.dto.response.ResponseWishlist;
 import com.hbd.mommy.domain.wishlist.model.dto.response.ResponseWishlistRanking;
+import com.hbd.mommy.domain.wishlist.service.WishlistService;
 import com.hbd.mommy.global.auth.jwt.AppAuthentication;
 import com.hbd.mommy.global.auth.role.UserAuth;
 
@@ -23,6 +26,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WishlistController {
 
+	private final WishlistService wishlistService;
+
 	/**
 	 * 내 위시리스트 목록 조회
 	 *
@@ -31,7 +36,7 @@ public class WishlistController {
 	@GetMapping
 	@UserAuth
 	public ResponseWishlist getWishlist(AppAuthentication auth) {
-		return null;
+		return wishlistService.getWishlist(auth.getUserId());
 	}
 
 	/**
@@ -39,9 +44,9 @@ public class WishlistController {
 	 *
 	 * @return 위시리스트 top3
 	 */
-	@GetMapping
+	@GetMapping("/top")
 	public ResponseWishlistRanking getWishlistRanking() {
-		return null;
+		return wishlistService.getWishlistRanking();
 	}
 
 	/**
@@ -52,31 +57,31 @@ public class WishlistController {
 	 */
 	@PostMapping
 	@UserAuth
-	public ResponseWishlist addWishlist(AppAuthentication auth, RequestAddWishlist request) {
-		return null;
+	public WishlistItemDto addWishlist(AppAuthentication auth, @RequestBody RequestAddWishlist request) {
+		return wishlistService.addWishlist(auth.getUserId(), request);
 	}
 
 	/**
 	 * 내 위시리스트에서 음식 제거
 	 *
-	 * @param id 위시리스트 아이템 아이디
+	 * @param id 음식 아이디
 	 * @return 삭제된 뒤의 위시리스트 반환
 	 */
 	@DeleteMapping("/{id}")
 	@UserAuth
-	public ResponseWishlist deleteWishlist(AppAuthentication auth, @PathVariable("id") Long id) {
-		return null;
+	public void deleteWishlist(AppAuthentication auth, @PathVariable("id") Long id) {
+		wishlistService.deleteWishlist(auth.getUserId(), id);
 	}
 
 	/**
 	 * 음식에 좋아요 +1
 	 *
-	 * @param id 위시리스트 아이템 아이디
+	 * @param id 음식 아이디
 	 * @return 좋아요 증가 뒤의 위시리스트 반환
 	 */
 	@PatchMapping("/like/{id}")
 	@UserAuth
-	public ResponseWishlist addLike(AppAuthentication auth, @PathVariable("id") Long id) {
-		return null;
+	public WishlistItemDto addLike(AppAuthentication auth, @PathVariable("id") Long id) {
+		return wishlistService.addLike(auth.getUserId(), id);
 	}
 }
