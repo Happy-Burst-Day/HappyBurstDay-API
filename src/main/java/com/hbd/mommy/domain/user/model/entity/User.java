@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Builder
-@Table(name = "dku_user",
+@Table(name = "hbd_user",
 	indexes = {
 		@Index(name = "idx_user_email", columnList = "email")
 	})
