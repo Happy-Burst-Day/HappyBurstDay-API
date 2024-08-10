@@ -45,8 +45,9 @@ public class WishlistController {
 	 * @return 위시리스트 top3
 	 */
 	@GetMapping("/top")
-	public ResponseWishlistRanking getWishlistRanking() {
-		return wishlistService.getWishlistRanking();
+	@UserAuth
+	public ResponseWishlistRanking getWishlistRanking(AppAuthentication auth) {
+		return wishlistService.getWishlistRanking(auth.getUserId());
 	}
 
 	/**

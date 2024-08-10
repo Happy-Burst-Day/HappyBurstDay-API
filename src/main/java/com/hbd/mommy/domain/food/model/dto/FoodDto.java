@@ -19,9 +19,10 @@ public class FoodDto {
 	private final FoodSafeType safeType;
 	private final List<String> tags;
 	private final List<FoodDiseaseWarning> diseaseWarnings;
-	private double calroie;
-	private double vitaminC;
-	private double iron;
-	private double calcium;
-	private double protein;
+	private final double calroie;
+	private final double vitaminC;
+	private final double iron;
+	private final double calcium;
+	private final double protein;
+	private final long dday;
 }

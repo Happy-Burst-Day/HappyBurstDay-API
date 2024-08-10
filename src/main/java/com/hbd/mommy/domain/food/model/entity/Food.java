@@ -51,4 +51,6 @@ public class Food extends BaseEntity {
 	private double calcium;
 
 	private double protein;
+
+	private int daysEatAfterBirth;
 }

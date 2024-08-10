@@ -1,5 +1,7 @@
 package com.hbd.mommy.domain.food.mapper;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 
@@ -8,7 +10,8 @@ import com.hbd.mommy.domain.food.model.dto.FoodDto;
 import com.hbd.mommy.domain.food.model.entity.Food;
 
 public class FoodMapper {
-	public static FoodDto toFoodResponse(Food food) {
+	public static FoodDto toFoodResponse(Food food, LocalDate birthDate) {
+		long dday = ChronoUnit.DAYS.between(LocalDate.now(), birthDate.plusDays(food.getDaysEatAfterBirth()));
 		return FoodDto.builder()
 			.id(food.getId())
 			.name(food.getName())
@@ -21,6 +24,7 @@ public class FoodMapper {
 			.vitaminC(food.getVitaminC())
 			.safeType(food.getSafeType())
 			.diseaseWarnings(mapToDiseaseWarnings(food.getDiseaseWarning()))
+			.dday(dday)
 			.build();
 	}
 
