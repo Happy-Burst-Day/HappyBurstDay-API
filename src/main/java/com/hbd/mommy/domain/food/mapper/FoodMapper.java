@@ -14,6 +14,7 @@ public class FoodMapper {
 			.name(food.getName())
 			.imageUrl(food.getImageUrl())
 			.tags(mapToFoodTags(food.getTags()))
+			.calroie(food.getCalroie())
 			.calcium(food.getCalcium())
 			.protein(food.getProtein())
 			.iron(food.getIron())

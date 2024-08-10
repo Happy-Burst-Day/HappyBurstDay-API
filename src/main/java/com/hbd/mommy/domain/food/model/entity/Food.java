@@ -42,6 +42,8 @@ public class Food extends BaseEntity {
 	@Column(columnDefinition = "LONGTEXT")
 	private String diseaseWarning;
 
+	private double calroie;
+
 	private double vitaminC;
 
 	private double iron;
