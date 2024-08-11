@@ -1,10 +1,8 @@
-package com.hbd.mommy.domain.user.model.entity;
+package com.hbd.mommy.domain.food.model.entity;
 
 import static jakarta.persistence.EnumType.*;
 
-import java.time.LocalDate;
-
-import com.hbd.mommy.global.auth.role.UserRole;
+import com.hbd.mommy.domain.food.model.FoodSafeType;
 import com.hbd.mommy.global.base.BaseEntity;
 
 import jakarta.persistence.Column;
@@ -12,8 +10,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -23,33 +19,38 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Builder
-@Table(name = "hbd_user",
-	indexes = {
-		@Index(name = "idx_user_email", columnList = "email")
-	})
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class User extends BaseEntity {
+public class Food extends BaseEntity {
 
 	@Id
 	@GeneratedValue
-	@Column(name = "user_id")
+	@Column(name = "food_id")
 	private Long id;
 
 	@NotNull
-	private String email;
+	private String name;
 
-	@NotNull
-	private String password;
+	private String tags;
 
-	@NotNull
-	private LocalDate birthDate;
+	private String imageUrl;
 
 	@Enumerated(STRING)
-	private UserRole role;
+	private FoodSafeType safeType;
 
-	public void changeBirthDate(LocalDate birthDate) {
-		this.birthDate = birthDate;
-	}
+	@Column(columnDefinition = "LONGTEXT")
+	private String diseaseWarning;
+
+	private double calroie;
+
+	private double vitaminC;
+
+	private double iron;
+
+	private double calcium;
+
+	private double protein;
+
+	private int daysEatAfterBirth;
 }

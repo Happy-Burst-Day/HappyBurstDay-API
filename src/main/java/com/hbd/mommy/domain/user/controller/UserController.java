@@ -1,11 +1,13 @@
 package com.hbd.mommy.domain.user.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hbd.mommy.domain.user.model.dto.request.RequestChangeBirthDateDto;
 import com.hbd.mommy.domain.user.model.dto.request.RequestLoginDto;
 import com.hbd.mommy.domain.user.model.dto.request.RequestRefreshTokenDto;
 import com.hbd.mommy.domain.user.model.dto.request.RequestSignupDto;
@@ -74,5 +76,18 @@ public class UserController {
 	public ResponseLoginDto refreshToken(HttpServletRequest request,
 		@Valid @RequestBody RequestRefreshTokenDto dto) {
 		return userService.refreshToken(request, dto.getRefreshToken());
+	}
+
+	/**
+	 * 출산예정일 변경
+	 *
+	 * @param request 요청
+	 * @return 변경 후의 사용자 정보
+	 */
+	@PatchMapping("/birthdate")
+	@UserAuth
+	public ResponseUserInfoDto changeBirthDate(AppAuthentication auth,
+		@Valid @RequestBody RequestChangeBirthDateDto request){
+		return userService.changeBirthDate(auth.getUserId(), request);
 	}
 }
