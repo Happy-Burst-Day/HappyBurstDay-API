@@ -20,10 +20,6 @@ public interface WishlistRepository extends JpaRepository<WishlistItem, Long> {
 
 	void deleteByFoodId(Long foodId);
 
-	@Query("SELECT w.food, COUNT(w.food.id) as foodCount " +
-		"FROM WishlistItem w " +
-		"GROUP BY w.food.id " +
-		"ORDER BY foodCount DESC " +
-		"LIMIT 3")
+	@Query("select distinct w from WishlistItem w order by w.id limit 3")
 	List<WishlistItem> findTop3Foods();
 }
